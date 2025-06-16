@@ -1,25 +1,329 @@
+
+body {
+  margin: 0;
+  padding:0;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  height: 100%;
+  width: 100%;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: repeating-linear-gradient(0deg, #2d0032, #520971 20px);
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+.con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.red {
+  background-image: linear-gradient(rgb(255, 0, 0, .8), rgb(255, 0, 0, .2), transparent);
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: transparent; /* or any background */
+}
+
+.shimmer::before {
+   content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 0, 0.4) 50%,
+    transparent 100%
+  );
+  
+  pointer-events: none; /* So it doesn't interfere with interaction */
+  z-index: 1;
+  animation: shimmer 1s ease-in-out 1 forwards;
+}
+
+.shimmer > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.person {
+  border-radius: 20px;
+}
+
+
+button,
+input[type=submit] {
+  cursor: pointer;
+  padding: 5px 10px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+input[type=submit]{
+  border: 2px solid rgb(88, 23, 94);
+background-color: rgb(186, 124, 192);
+}
+
+input[type=submit]:hover{
+  border: 2px solid rgb(135, 68, 154);
+  background-color: rgb(188, 138, 193);
+}
+
+button {
+  border: 2px solid rgb(159, 90, 0);
+  background-color: gold;
+}
+button:hover {
+  border: 2px solid rgb(205, 121, 12);
+  background-color: rgb(255, 228, 76);
+}
+
+
+h1 {
+  /* font-family:Verdana, Geneva, Tahoma, sans-serif */
+  font: 800 40px  Verdana;
+  letter-spacing: 0.05em;
+  -webkit-text-fill-color: rgb(75, 49, 0);
+  -webkit-text-stroke: rgb(223, 181, 29) .8px;
+  margin-top: 40px;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:630px;
+  width: 900px;
+  --notchSize: 50px;
+  background-image: repeating-linear-gradient(45deg, rgb(131, 85, 7),  rgb(231, 196, 0), rgb(255, 238, 145), rgb(231, 196, 0), rgb(180, 116, 4),rgb(131, 85, 7), rgb(255, 238, 145));
+
+  clip-path:
+    polygon(0% var(--notchSize),
+      var(--notchSize) 0%,
+      calc(100% - var(--notchSize)) 0%,
+      100% var(--notchSize),
+      100% calc(100% - var(--notchSize)),
+      calc(100% - var(--notchSize)) 100%,
+      var(--notchSize) 100%,
+      0% calc(100% - var(--notchSize)));
+}
+
+
+.main-inner {
+  height: 620px;
+  width: 890px;
+  --notchSize: 47px;
+  background-color: rgb(124, 75, 128);
+  display: flex;
+  flex-direction: column;
+  justify-content:start;
+  position: absolute;
+
+  clip-path:
+    polygon(0% var(--notchSize),
+      var(--notchSize) 0%,
+      calc(100% - var(--notchSize)) 0%,
+      100% var(--notchSize),
+      100% calc(100% - var(--notchSize)),
+      calc(100% - var(--notchSize)) 100%,
+      var(--notchSize) 100%,
+      0% calc(100% - var(--notchSize)));
 }
 
 
 .body {
   display: flex;
+  justify-content: center;
 }
 
-.box1,
+.bubble {
+  position: relative;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  width: 300px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 12px;
+  text-align: center;
+  color: #000;
+}
+
+.bubble-bottom-right:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 30px solid #fff;
+  border-right: 20px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 20px solid transparent;
+  right: -35px;
+  bottom: 5px;
+}
+
+.btns {
+  display: flex;
+  gap: 30px;
+}
+
 .box2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px;
-  padding: 10px;
-  border: 2px solid grey;
+  gap: 30px;
+  margin: 0px 20px;
+  padding: 40px;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255, .7);
 }
+
+.q {
+  font-weight: bold;
+}
+
+.box1 {
+  width: 400px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  margin: 0px 20px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255, .8);
+}
+
+.qna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.stuff {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.guess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.squish {
+transform-origin: bottom center;
+animation: squish 2s ease-in-out infinite;
+}
+
+.float {
+animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes squish {
+  0%   { transform: scaleY(1); }
+  50%  { transform: scaleY(.94); }
+  100% { transform: scaleY(1); }
+}
+
+.figure-8 {
+  animation: figureEight 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes figureEight {
+  0%   { transform: translate(0px, 0px); }
+  12.5%  { transform: translate(20px, -20px); }
+  25%  { transform: translate(40px, 0px); }
+  37.5% { transform: translate(20px, 20px); }
+  50%  { transform: translate(0px, 0px); }
+  62.5% { transform: translate(-20px, -20px); }
+  75%  { transform: translate(-40px, 0px); }
+  87.5% { transform: translate(-20px, 20px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.flames {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: -10px;
+  left: 25px;
+}
+.flame {
+  height: 105px;
+  width: 105px;
+  z-index: 10;
+}
+
+.stars {
+  display: flex;
+  flex-direction: column;
+}
+.star {
+  height:150px;
+  width: 150px;
+}
+
+.slow {
+  animation: slow 3s ease-in-out loop;
+  animation-delay: 2s;
+}
+
+@keyframes slow {
+from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
