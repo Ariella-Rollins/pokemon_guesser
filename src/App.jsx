@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { pokemonList } from "./components/pokemonList";
 import { GameForm } from "./components/gameForm";
 import "./App.css";
@@ -9,36 +9,15 @@ import Lottie from "lottie-react";
 import fire from "./images/fire.json"
 import shine from "./images/shine.json"
 
-
-// make guess also do api call.
-// analyse api call
-
 function App() {
     const [gameStart, setGameStart] = useState(false);
     const [ending, setEnding] = useState(null)
     const [Qnumber, setQnumber] = useState(0);
     const [pokePic, setPokePic] = useState(null)
-    const [pokeUrl, setPokeUrl] = useState(null)
     const [guessing, setGuessing] = useState(false)
     const [possibleList, setPossibleList] = useState(pokemonList);
     const [pic, setPic] = useState("gloom.jpg");
     const [count, setCount] = useState(0)
-
-    // const finalGuessQs = [
-    //     { question: `Maybe it's ${possibleList[0]["name"]}?`, answer: `${possibleList[0]["name"]}` },
-    //     { question: `Then perhaps ${possibleList[0]["name"]}?`, answer: `${possibleList[0]["name"]}` },
-    // ]
-
-//     const playerRef = useRef();
-
-//       useEffect(() => {
-//     const player = playerRef.current;
-//     if (player) {
-//       player.addEventListener("load", () => {
-//         player.goToAndPlay(0, true);
-//       });
-//     }
-//   }, []);
 
 
     function YesGuess(e) {
@@ -66,72 +45,46 @@ function App() {
     useEffect(() => {
         if (possibleList.length === 1 || guessing === true) {
             const pokemonName = possibleList[0].slug || possibleList[0].name;
-            console.log("API calling...");
             axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
                 .then(pokemon => {
                     const speciesUrl = pokemon.data.species.url;
-                    console.log("Species URL:", speciesUrl);
-                    // Chain the second request
                     return axios.get(speciesUrl);
                 })
                 .then(speciesData => {
-                    console.log("Species data:", speciesData.data);
                     return axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
                 })
                 .then(pokemonData => {
                     const imageUrl = pokemonData.data.sprites.other['official-artwork'].front_default;
-                    console.log("Official artwork URL:", imageUrl);
                     setPokePic(imageUrl);
                 })
-                .catch(error => {
-                    console.error("Error fetching Pokémon data:", error);
-                });
         }
     }, [guessing, possibleList]);
 
-    // useEffect(() => {
-    //     if (possibleList.length == 1 || guessing== true) {
-    //         console.log("API calling...")
-    //         axios.get(`https://pokeapi.co/api/v2/pokemon/${possibleList[0].name}`)
-    //                 // .then(response => response.json())
-    //                 .then(pokemon => {
-    //                     console.log(pokemon.data.species.url)
-    //                     setPokeUrl(pokemon.data.species.url)
-    //                 }
-    //             )
-    //             .then(
-    //                 axios.get(pokeUrl)
-    //                 // .then(response => response.json())
-    //                 .then((pokeData) => {
-    //                     console.log("pokedata", pokeData)
-    //                     setPokePic(pokeData)
-    //                 })
-    //             )
-
-    //     }
-
-    // }, [guessing, possibleList]);
-
     function win(e) {
         e.preventDefault()
-        console.log("won here")
         setEnding("win");
         setPic("evil.jpg")
     }
 
     function lose(e) {
         e.preventDefault()
-        console.log("lost here")
         setEnding("lose");
         setPic("lost.jpg")
     }
 
-    //resets by form submit.
     function resetGame() {
+        setGameStart(false)
+        setEnding(null)
+        setQnumber(0)
+        setPokePic(null)
+        setGuessing(false)
+        setPossibleList(pokemonList)
+        setPic("gloom.jpg")
+        setCount(0)
     }
 
     return (
-        <div className={`con ${ending == "lose"? "red": ending=="win" && "shimmer"}`}>
+        <div className={`con ${ending == "lose" ? "red" : ending == "win" && "shimmer"}`}>
             {ending == "win" &&
                 <>
                     <div className="stars">
@@ -165,9 +118,7 @@ function App() {
                                     <div className="stuff">
                                         <div className="qna">
                                             <p className="bubble bubble-bottom-right">Hmmm...that doesn't match any first gen pokemon.<br></br>Please try again.</p>
-                                            <form onSubmit={resetGame}>
-                                                <input type="submit" value="Okay" />
-                                            </form>
+                                            <button className="purple">Restart Game</button>
                                         </div>
                                     </div>
                                 </>
@@ -208,10 +159,10 @@ function App() {
 
                                                     <div className="btns">
                                                         <form onSubmit={YesGuess}>
-                                                            <input type="submit" value="Yes" />
+                                                            <input type="submit" className="purple" value="Yes" />
                                                         </form>
                                                         <form onSubmit={NoGuess}>
-                                                            <input type="submit" value="No" />
+                                                            <input type="submit" className="purple" value="No" />
                                                         </form>
                                                     </div>
                                                     <img src={pokePic} alt="pokemon" height="200"></img>
@@ -234,10 +185,10 @@ function App() {
                                                     <p className="bubble bubble-bottom-right">Is it {possibleList[0].name}?</p>
                                                     <div className="btns">
                                                         <form onSubmit={win}>
-                                                            <input type="submit" value="Yes" />
+                                                            <input type="submit" className="purple" value="Yes" />
                                                         </form>
                                                         <form onSubmit={lose}>
-                                                            <input type="submit" value="No" />
+                                                            <input type="submit" className="purple" value="No" />
                                                         </form>
                                                     </div>
                                                     <img src={pokePic} alt="pokemon" height="200"></img>
@@ -254,9 +205,7 @@ function App() {
                         </div>
                         <div className="box2">
                             <img src={pic} height="220" width="220" className="person"></img>
-                            <form onSubmit={resetGame}>
-                                <input type="submit" value="Restart Game" />
-                            </form>
+                            <button className="purple" onClick={resetGame}>Restart Game</button>
                         </div>
                     </div>
                     {ending == "lose" &&
@@ -288,19 +237,19 @@ function App() {
                         </div>}
                 </div>
             </div>
-            { ending=="win" && 
-            (<div className="stars">
-                        <div className="star">
-                            <Lottie animationData={shine} speed={.5} loop={true} />
-                        </div>
-                        <div className="star">
-                            <Lottie animationData={shine} speed={.5} loop={true} />
-                        </div>
-                        <div className="star">
-                            <Lottie animationData={shine} speed={.5} loop={true} />
-                        </div>
-            </div>)}
-                    
+            {ending == "win" &&
+                (<div className="stars">
+                    <div className="star">
+                        <Lottie animationData={shine} speed={.5} loop={true} />
+                    </div>
+                    <div className="star">
+                        <Lottie animationData={shine} speed={.5} loop={true} />
+                    </div>
+                    <div className="star">
+                        <Lottie animationData={shine} speed={.5} loop={true} />
+                    </div>
+                </div>)}
+
         </div>
     );
 }

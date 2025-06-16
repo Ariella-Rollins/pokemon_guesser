@@ -36,14 +36,16 @@ body {
   background-image: linear-gradient(rgb(255, 0, 0, .8), rgb(255, 0, 0, .2), transparent);
 }
 
+
 .shimmer {
   position: relative;
   overflow: hidden;
-  background-color: transparent; /* or any background */
+  background-color: transparent;
 }
 
+/* background shimmers 1x upon winning the game */
 .shimmer::before {
-   content: '';
+  content: '';
   position: absolute;
   top: 0;
   left: -150%;
@@ -80,7 +82,6 @@ body {
   border-radius: 20px;
 }
 
-
 button,
 input[type=submit] {
   cursor: pointer;
@@ -90,12 +91,12 @@ input[type=submit] {
   border-radius: 5px;
 }
 
-input[type=submit]{
+.purple{
   border: 2px solid rgb(88, 23, 94);
 background-color: rgb(186, 124, 192);
 }
 
-input[type=submit]:hover{
+.purple:hover{
   border: 2px solid rgb(135, 68, 154);
   background-color: rgb(188, 138, 193);
 }
@@ -111,7 +112,6 @@ button:hover {
 
 
 h1 {
-  /* font-family:Verdana, Geneva, Tahoma, sans-serif */
   font: 800 40px  Verdana;
   letter-spacing: 0.05em;
   -webkit-text-fill-color: rgb(75, 49, 0);
@@ -160,7 +160,6 @@ h1 {
       var(--notchSize) 100%,
       0% calc(100% - var(--notchSize)));
 }
-
 
 .body {
   display: flex;
@@ -251,19 +250,10 @@ h1 {
   gap: 10px;
 }
 
+/* Pokemon squishes up and down slightly (as if breathing) upon winning the game */
 .squish {
 transform-origin: bottom center;
 animation: squish 2s ease-in-out infinite;
-}
-
-.float {
-animation: float 2s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
 }
 
 @keyframes squish {
@@ -272,6 +262,7 @@ animation: float 2s ease-in-out infinite;
   100% { transform: scaleY(1); }
 }
 
+/* Pokemon moves in a figure-8 motion upon losing the game */
 .figure-8 {
   animation: figureEight 3s linear infinite;
   display: inline-block;

@@ -1,8 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
-
-// if Acolor no, then remove that color from the list? filter the array after Acolor is answered as no
-// for some reason if you say yes to trait1, then trait2 question becomes "null-like". (rn I skipped trait2 if trait1 ==yes) 
+import { useEffect, useState } from "react";
 
 export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possibleList, setGuessing}) {
     // used for iterating over arrays of questions
@@ -10,8 +6,10 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
 
     // stages of the game
     const [stage, setStage] = useState(1)
+
     // the most likely color (based on pokemon type)
     const[aColor, setAColor] = useState(null);
+    
     // most likely traits ( based on possiblePokemon list)
     const [trait, setTrait] = useState(null)
     const [trait2, setTrait2] = useState(null)
@@ -54,19 +52,7 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         else if (stage == 7) {
             setGuessing(true)
         }
-        else{console.log("error, no stage")}
-
-        console.log("currentQ:", currentQ)
-        console.log("stage", stage)
     },[count, stage, aColor, trait, trait2])
-
-    // stage 1 (guess type)
-    // stage 2 (guess most likely color (based on pokemon type))
-    // stage 3 (guess secondary types and evolution)
-    // stage 4 (guess if evolution of evolution)
-    //stage 5 (guess color (if not yet known))
-    //stage 6 (guess traits/size)
-    //stage 7 (guess pokemon (if more than 1 in possiblePokemon list))
 
     const typeQs = [
         {question: "Is your pokemon a fire type?", answer: "Fire"},
@@ -123,7 +109,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
 
     function TypeYes(e) {
         e.preventDefault();
-        console.log("type", e.target.answer.value);
         setPossibleList((prev) =>
             prev.filter((one) => one.type.includes(e.target.answer.value))
         );
@@ -152,9 +137,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
             setAColor("green")
             setColorQs((prev)=> prev.filter((one)=> one.answer !="orange" && one.answer !="grey" )) 
         }
-        else {
-            console.log("Error: no color.")
-        }
         setCount(0);
         setQnumber((prev) => prev + 1);
         setPic("normal.jpg");
@@ -163,11 +145,9 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
 
     function TypeNo(e) {
         e.preventDefault();
-        console.log("not type", e.target.answer.value)
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
         if (e.target.answer.value == "Fighting") {
-            console.log("no type!")
             setPossibleList([])
         }
     }
@@ -175,7 +155,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
     function AColorYes(e) {
         e.preventDefault();
         setCount(0);
-        console.log("color", e.target.answer.value);
         setPossibleList((prev) => prev.filter((one) => one.color.includes(e.target.answer.value))
         );
         setPokemonColor(e.target.answer.value);
@@ -188,7 +167,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         setCount(0);
         setQnumber((prev) => prev + 1);
         const color = e.target.answer.value
-        console.log("the color isnt:", color);
         setColorQs((prev)=> prev.filter((one)=> one.answer != color))
         // brown is too ambigous for pokemon colors. Ex: A user might think geodude is grey OR brown. This gives leeway.
         if (color != "brown"){
@@ -201,23 +179,16 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         e.preventDefault();
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
-        console.log(e.target.answer.value);
         if (e.target.answer.value == "fly") {
             setPossibleList((prev) => prev.filter((one) => one.canFly));
-            console.log("can fly");
         }
         else if (e.target.answer.value == "poison") {
             setPossibleList((prev) => prev.filter((one) => one.type.includes("Poison")));
-            console.log("has poison");
         }
         else if (e.target.answer.value == "evo") {
             setPossibleList((prev) => prev.filter((one) => one.stage == 1 || one.stage == 2));
-            console.log("is evo");
             setCount(0)
             setStage(4)
-        }
-        else {
-            console.warn("error");
         }
     }
 
@@ -225,36 +196,22 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         e.preventDefault();
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
-        console.log(e.target.answer.value);
         if (e.target.answer.value == "fly") {
             setPossibleList((prev) => prev.filter((one) => !one.canFly));
-            console.log("can't fly");
         }
         else if (e.target.answer.value == "poison") {
-            possibleList.map((one)=> {
-                if(one.type.includes("Poison")){
-                    console.log("one:", one)
-                }
-            })
             setPossibleList((prev) => prev.filter((one) => !one.type.includes("Poison")));
-            console.log("no poison");
         }
         else if (e.target.answer.value == "evo") {
             setPossibleList((prev) => prev.filter((one) => one.stage == 0));
-            console.log("isn't evo");
             setCount(0)
             // if color is known, skip stage 5 (skip guessing colors)
             if (pokemonColor) {
-                console.log("skipping color")
                 setStage(6)
             }
             else{
-            console.log("not skipping")
             setStage(5)
             }
-        }
-        else {
-            console.warn("error");
         }
     }
 
@@ -263,7 +220,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         setCount(0);
         setQnumber((prev) => prev + 1);
         setPossibleList((prev) => prev.filter((one) => one.stage == 2));
-        console.log("acolor", aColor)
         if (aColor) {
             setStage(6)
         }
@@ -277,7 +233,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         setCount(0);
         setQnumber((prev) => prev + 1);
         setPossibleList((prev) => prev.filter((one) => one.stage == 1));
-        console.log("acolor", aColor)
         if (pokemonColor) {
             setStage(6)
         }
@@ -286,27 +241,8 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         }
     }
 
-
-    function YesGuess(e) {
-        e.preventDefault()
-        setCount((prev)=> prev + 1)
-        setPic("evil.jpg")
-        setEnding("win")
-    }
-
-    function NoGuess(e) {
-        e.preventDefault()
-        setCount((prev)=> prev + 1)
-        if (count==1){
-            setPic("lost.jpg")
-            setEnding("lose")
-        }
-        else{console.log("error, no ending set")}
-    }
-    //use case switch for this?
     function YesTrait(e) {
         e.preventDefault()
-        console.log("yes trait", e.target.answer.value)
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
         const trait = e.target.answer.value
@@ -342,7 +278,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
 
     function NoTrait(e) {
         e.preventDefault()
-        console.log("no Trait:", e.target.answer.value)
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
         const trait = e.target.answer.value
@@ -383,7 +318,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
             }
             else {traitCounter[value] += 1}
         }
-        console.log(traitCounter)
         let maxVal = 0
         let maxKey = null
         for (let key in traitCounter) {
@@ -392,7 +326,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
                 maxKey = key
             }
         }
-        console.log(maxKey)
         setTrait(maxKey)
         traitCounter[maxKey] = 0
 
@@ -404,15 +337,12 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
                 maxKey2 = key
             }
         }
-        console.log(maxKey2)
         setTrait2(maxKey2)
     }
 
-    
     function ColorYes(e) {
         e.preventDefault();
         setCount((prev) => prev + 1);
-        console.log("color", e.target.answer.value);
         setPossibleList((prev) =>
             prev.filter((one) => one.color.includes(e.target.answer.value))
         );
@@ -427,7 +357,6 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
         e.preventDefault();
         setCount((prev) => prev + 1);
         setQnumber((prev) => prev + 1);
-        console.log("count", count);
         setAColor(null)
         setPossibleList((prev) => prev.filter((one) => one.color != e.target.answer.value))
         // If a pokemon is 2 colors (example: orange and white)
@@ -441,11 +370,11 @@ export function GameForm({setEnding, setQnumber, setPic, setPossibleList, possib
                     <div className="btns">
                         <form onSubmit={YesFunction}>
                             <input type="hidden" name="answer" value ={currentQ.answer}/>
-                            <input type="submit" value="Yes" />
+                            <input type="submit" className="purple" value="Yes" />
                         </form>
                         <form onSubmit={NoFunction}>
                             <input type="hidden" name="answer" value ={currentQ.answer}/>
-                            <input type="submit" value="No" />
+                            <input type="submit" className="purple" value="No" />
                         </form>
                     </div>
                 </div>
