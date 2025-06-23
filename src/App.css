@@ -11,7 +11,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: repeating-linear-gradient(0deg, #2d0032, #520971 20px);
+  background-image: repeating-linear-gradient(0deg, #2d0032, #520971 40px);
 }
 
 @keyframes animate-stripes {
@@ -25,6 +25,7 @@ body {
 }
 
 .con {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,12 +39,22 @@ body {
 
 
 .shimmer {
-  position: relative;
-  overflow: hidden;
+  /* overflow: hidden;
   background-color: transparent;
+  width: 100%;
+  min-height: 100%; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* background shimmers 1x upon winning the game */
+
 .shimmer::before {
   content: '';
   position: absolute;
@@ -51,17 +62,15 @@ body {
   left: -150%;
   width: 150%;
   height: 100%;
-
   background: linear-gradient(
     120deg,
     transparent 0%,
     rgba(255, 255, 0, 0.4) 50%,
     transparent 100%
   );
-  
-  pointer-events: none; /* So it doesn't interfere with interaction */
-  z-index: 1;
   animation: shimmer 1s ease-in-out 1 forwards;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .shimmer > * {
@@ -78,8 +87,61 @@ body {
   }
 }
 
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 55%;
+  /* height:730px;
+  width: 1000px; */
+  --notchSize: 50px;
+  background-image: repeating-linear-gradient(45deg, rgb(131, 85, 7),  rgb(231, 196, 0), rgb(255, 238, 145), rgb(231, 196, 0), rgb(180, 116, 4),rgb(131, 85, 7), rgb(255, 238, 145));
+
+  clip-path:
+    polygon(0% var(--notchSize),
+      var(--notchSize) 0%,
+      calc(100% - var(--notchSize)) 0%,
+      100% var(--notchSize),
+      100% calc(100% - var(--notchSize)),
+      calc(100% - var(--notchSize)) 100%,
+      var(--notchSize) 100%,
+      0% calc(100% - var(--notchSize)));
+      z-index: 2;
+}
+
+.main-inner {
+  /* min-height: fit-content;
+  min-width: fit-content; */
+  height: 78% !important;
+  width: 54% !important;
+  --notchSize: 47px;
+  background-color: rgb(124, 75, 128);
+  display: flex;
+  flex-direction: column;
+  justify-content:start;
+  position: absolute;
+  clip-path:
+    polygon(0% var(--notchSize),
+      var(--notchSize) 0%,
+      calc(100% - var(--notchSize)) 0%,
+      100% var(--notchSize),
+      100% calc(100% - var(--notchSize)),
+      calc(100% - var(--notchSize)) 100%,
+      var(--notchSize) 100%,
+      0% calc(100% - var(--notchSize)));
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}
+
 .person {
   border-radius: 20px;
+  margin: 30px;
 }
 
 button,
@@ -87,7 +149,7 @@ input[type=submit] {
   cursor: pointer;
   padding: 5px 10px;
   font-family:Arial, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: 14pt;
   border-radius: 5px;
 }
 
@@ -112,69 +174,24 @@ button:hover {
 
 
 h1 {
-  font: 800 40px  Verdana;
+  font: 1000 50px  Verdana;
   letter-spacing: 0.05em;
   -webkit-text-fill-color: rgb(75, 49, 0);
   -webkit-text-stroke: rgb(223, 181, 29) .8px;
-  margin-top: 40px;
-}
-
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height:630px;
-  width: 900px;
-  --notchSize: 50px;
-  background-image: repeating-linear-gradient(45deg, rgb(131, 85, 7),  rgb(231, 196, 0), rgb(255, 238, 145), rgb(231, 196, 0), rgb(180, 116, 4),rgb(131, 85, 7), rgb(255, 238, 145));
-
-  clip-path:
-    polygon(0% var(--notchSize),
-      var(--notchSize) 0%,
-      calc(100% - var(--notchSize)) 0%,
-      100% var(--notchSize),
-      100% calc(100% - var(--notchSize)),
-      calc(100% - var(--notchSize)) 100%,
-      var(--notchSize) 100%,
-      0% calc(100% - var(--notchSize)));
+  margin-top: 30px;
 }
 
 
-.main-inner {
-  height: 620px;
-  width: 890px;
-  --notchSize: 47px;
-  background-color: rgb(124, 75, 128);
-  display: flex;
-  flex-direction: column;
-  justify-content:start;
-  position: absolute;
-
-  clip-path:
-    polygon(0% var(--notchSize),
-      var(--notchSize) 0%,
-      calc(100% - var(--notchSize)) 0%,
-      100% var(--notchSize),
-      100% calc(100% - var(--notchSize)),
-      calc(100% - var(--notchSize)) 100%,
-      var(--notchSize) 100%,
-      0% calc(100% - var(--notchSize)));
-}
-
-.body {
-  display: flex;
-  justify-content: center;
-}
 
 .bubble {
   position: relative;
   font-family:Arial, Helvetica, sans-serif;
-  font-size: 18px;
+  font-size: 16pt;
   line-height: 24px;
-  width: 300px;
+  width: 85%;
   background: #fff;
   border-radius: 20px;
-  padding: 12px;
+  padding: 20px;
   text-align: center;
   color: #000;
 }
@@ -192,38 +209,43 @@ h1 {
   bottom: 5px;
 }
 
+.poke-pic {
+  padding-bottom: 10px;
+}
+
 .btns {
   display: flex;
   gap: 30px;
 }
 
 .box2 {
+  height: 100%;
+  max-height: 410px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
   margin: 0px 20px;
-  padding: 40px;
   border-radius: 20px;
-  background-color: rgb(255, 255, 255, .7);
+  background-color: rgb(255, 255, 255, .75);
 }
 
 .q {
   font-weight: bold;
+  font-size: 15pt;
 }
 
 .box1 {
-  width: 400px;
-  height: 380px;
+  width: 60%;
+  height: 100%;
+  max-height: 410px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   margin: 0px 20px;
-  padding: 10px;
   border-radius: 20px;
-  background-color: rgb(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, 0.75);
 }
 
 .qna {

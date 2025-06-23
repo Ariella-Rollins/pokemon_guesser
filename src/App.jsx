@@ -84,9 +84,10 @@ function App() {
     }
 
     return (
-        <div className={`con ${ending == "lose" ? "red" : ending == "win" && "shimmer"}`}>
+        <div className={`con ${ending == "lose" && "red"}`}>
             {ending == "win" &&
                 <>
+                    <div className="shimmer"></div>
                     <div className="stars">
                         <div className="star slow">
                             <Lottie animationData={shine} speed={.5} loop={true} />
@@ -118,7 +119,7 @@ function App() {
                                     <div className="stuff">
                                         <div className="qna">
                                             <p className="bubble bubble-bottom-right">Hmmm...that doesn't match any first gen pokemon.<br></br>Please try again.</p>
-                                            <button className="purple">Restart Game</button>
+                                            <button className="purple" onClick={resetGame}>Restart Game</button>
                                         </div>
                                     </div>
                                 </>
@@ -128,7 +129,7 @@ function App() {
                                         <div className="guess">
                                             <p className="bubble bubble-bottom-right">AHAHAHA! You were a fool to challenge me!</p>
                                             <div className="squish">
-                                                <img src={pokePic} alt="pokemon" height="200"></img>
+                                                <img src={pokePic} alt="pokemon" className="poke-pic" height="200"></img>
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +139,7 @@ function App() {
                                     <div className="stuff">
                                         <div className="guess">
                                             <p className="bubble bubble-bottom-right">W-What! Impossible!</p>
-                                            <img src={pokePic} alt="pokemon" height="200" className="figure-8"></img>
+                                            <img src={pokePic} alt="pokemon" height="200" className=" poke-pic figure-8"></img>
                                         </div>
                                     </div>
                                 </>
@@ -165,7 +166,7 @@ function App() {
                                                             <input type="submit" className="purple" value="No" />
                                                         </form>
                                                     </div>
-                                                    <img src={pokePic} alt="pokemon" height="200"></img>
+                                                    <img src={pokePic} alt="pokemon" className="poke-pic" height="200"></img>
                                                 </>)
                                             }
                                         </div>
@@ -191,7 +192,7 @@ function App() {
                                                             <input type="submit" className="purple" value="No" />
                                                         </form>
                                                     </div>
-                                                    <img src={pokePic} alt="pokemon" height="200"></img>
+                                                    <img src={pokePic} alt="pokemon" className="poke-pic" height="200"></img>
                                                 </>)
                                             }
                                         </div>
@@ -210,6 +211,9 @@ function App() {
                     </div>
                     {ending == "lose" &&
                         <div className="flames">
+                            <div className="flame">
+                                <Lottie animationData={fire} loop={true} height={200} width={200} />
+                            </div>
                             <div className="flame">
                                 <Lottie animationData={fire} loop={true} height={200} width={200} />
                             </div>
